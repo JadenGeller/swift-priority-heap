@@ -1,10 +1,5 @@
 import HeapModule
 
-public protocol Prioritizable {
-    associatedtype Priority: Comparable
-    var priority: Priority { get }
-}
-
 @usableFromInline
 internal struct PriorityItem<Referent: Prioritizable>: Comparable {
     @usableFromInline
