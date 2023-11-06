@@ -3,19 +3,19 @@
 import PackageDescription
 
 let package = Package(
-    name: "PriorityHeap",
+    name: "swift-priority-heap",
     products: [
         .library(
-            name: "PriorityHeap",
-            targets: ["PriorityHeap"]
+            name: "PriorityHeapModule",
+            targets: ["PriorityHeapModule"]
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-collections.git", branch: "release/1.1"),
+        .package(url: "https://github.com/apple/swift-collections", branch: "release/1.1"),
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
     ],
     targets: [
-        .target(name: "PriorityHeap", dependencies: [
+        .target(name: "PriorityHeapModule", dependencies: [
             .product(name: "HeapModule", package: "swift-collections"),
         ]),
     ]

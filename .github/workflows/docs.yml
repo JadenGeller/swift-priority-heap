@@ -23,7 +23,7 @@ jobs:
     - uses: fwal/setup-swift@v1
     - uses: fwcd/swift-docc-action@v1
       with:
-        target: PriorityHeap
+        target: PriorityHeapModule
         output: docs
         transform-for-static-hosting: 'true'
         disable-indexing: 'true'
