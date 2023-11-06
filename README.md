@@ -1,10 +1,10 @@
 # PriorityHeap
 
-PriorityHeap is a Swift data structure that extends the functionality of the Heap data structure from the [swift-collections](https://github.com/apple/swift-collections/blob/main/Documentation/Heap.md) package. It utilizes the `Prioritizable` protocol to allow elements to be ordered based on their inherent priority. This is particularly useful when the elements themselves are not directly comparable, or when you want to order the elements based on a specific property.
+[`PriorityHeap`](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheap/priorityheap) is a Swift data structure that extends the functionality of the [`Heap`](https://github.com/apple/swift-collections/blob/main/Documentation/Heap.md) data structure from the [swift-collections](https://github.com/apple/swift-collections) package. It utilizes the [`Prioritizable`](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheap/prioritizable) protocol to allow elements to be ordered based on their inherent priority. This is particularly useful when the elements themselves are not directly comparable, or when you want to order the elements based on a specific property.
 
 ## Prioritizable Protocol
 
-The `Prioritizable` protocol is defined as follows:
+The [`Prioritizable`](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheap/prioritizable) protocol is defined as follows:
 
 ```swift
 public protocol Prioritizable {
@@ -26,7 +26,7 @@ struct WorkItem: Prioritizable {
 
 ## PriorityHeap
 
-PriorityHeap is a [Min-Max Heap](https://en.wikipedia.org/wiki/Min-max_heap) data structure, where the ordering is based on the priority of an element. It provides methods to insert elements, and to retrieve and remove the elements with the highest and lowest priority.
+[PriorityHeap](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheap/priorityheap) is a [Min-Max Heap](https://en.wikipedia.org/wiki/Min-max_heap) data structure, where the ordering is based on the priority of an element. It provides methods to insert elements, and to retrieve and remove the elements with the highest and lowest priority.
 
 Here's an example of how to use it:
 
@@ -63,4 +63,3 @@ Then, include it in your target dependencies:
 ## Swift Collections
 
 PriorityHeap is backed by the Heap data structure from the [swift-collections](https://github.com/apple/swift-collections) package. Swift Collections is an open-source project from Apple introducing new data structures to Swift. For more detailed information about the performance and characteristics of the underlying Heap data structure, you can refer to the [official documentation](https://github.com/apple/swift-collections/blob/main/Documentation/Heap.md#performance).
-
