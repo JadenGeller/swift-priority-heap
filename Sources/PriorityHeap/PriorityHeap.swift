@@ -235,3 +235,32 @@ extension PriorityHeap {
         _storage.insert(contentsOf: newElements.lazy.map(PriorityItem.init))
     }
 }
+
+extension PriorityHeap: CustomStringConvertible {
+  /// A textual representation of this instance.
+  public var description: String {
+      "Priority\(_storage.description)"
+  }
+}
+
+extension PriorityHeap: CustomDebugStringConvertible {
+  /// A textual representation of this instance, suitable for debugging.
+  public var debugDescription: String {
+      description
+  }
+}
+
+extension PriorityHeap: ExpressibleByArrayLiteral {
+  /// Creates a new heap from the contents of an array literal.
+  ///
+  /// **Do not call this initializer directly.** It is used by the compiler when
+  /// you use an array literal. Instead, create a new heap using an array
+  /// literal as its value by enclosing a comma-separated list of values in
+  /// square brackets. You can use an array literal anywhere a heap is expected
+  /// by the type context.
+  ///
+  /// - Parameter elements: A variadic list of elements of the new heap.
+  public init(arrayLiteral elements: Element...) {
+    self.init(elements)
+  }
+}
