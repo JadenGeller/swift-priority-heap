@@ -26,6 +26,12 @@ extension PriorityItem: Sendable where Referent: Sendable {}
 /// A [Min-Max Heap](https://en.wikipedia.org/wiki/Min-max_heap) data structure,
 /// where the ordering is based on the priority of an element.
 ///
+/// `PriorityHeap` is a specialized version of the `Heap` data structure from the
+/// `swift-collections` package. It leverages the `Prioritizable` protocol to order
+/// elements based on their priority, which is a property of the elements. This is
+/// particularly useful when the elements themselves are not directly comparable,
+/// or when you want to order the elements based on a specific property.
+///
 /// In a min-max heap, each node at an even level in the tree is less than or
 /// equal to all its descendants, while each node at an odd level in the tree is
 /// greater than or equal to all of its descendants.

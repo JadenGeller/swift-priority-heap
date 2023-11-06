@@ -13,12 +13,14 @@
 ///
 /// Here's an example of a `WorkItem` structure that conforms to `Prioritizable`:
 ///
-///     struct WorkItem: Prioritizable {
-///         typealias Priority = Int
+/// ```swift
+/// struct WorkItem: Prioritizable {
+///     typealias Priority = Int
 ///
-///         let description: String
-///         let priority: Priority
-///     }
+///     let description: String
+///     let priority: Priority
+/// }
+/// ```
 ///
 /// In this example, `WorkItem` uses `Int` as its priority type, so work items with a higher
 /// integer value are considered to have a higher priority. The `description` property
@@ -27,17 +29,19 @@
 /// Now that `WorkItem` conforms to `Prioritizable`, you can create a `PriorityHeap` of work items
 /// and manage them based on their priority:
 ///
-///     var workHeap = PriorityHeap<WorkItem>()
-///     workHeap.insert(WorkItem(description: "Do laundry", priority: 2))
-///     workHeap.insert(WorkItem(description: "Buy groceries", priority: 1))
-///     workHeap.insert(WorkItem(description: "Pick up kids from school", priority: 3))
+/// ```swift
+/// var workHeap = PriorityHeap<WorkItem>()
+/// workHeap.insert(WorkItem(description: "Do laundry", priority: 2))
+/// workHeap.insert(WorkItem(description: "Buy groceries", priority: 1))
+/// workHeap.insert(WorkItem(description: "Pick up kids from school", priority: 3))
 ///
-///     while let workItem = workHeap.popMax() {
-///         print(workItem.description)
-///     }
-///     // Prints "Pick up kids from school"
-///     // Prints "Do laundry"
-///     // Prints "Buy groceries"
+/// while let workItem = workHeap.popMax() {
+///     print(workItem.description)
+/// }
+/// // Prints "Pick up kids from school"
+/// // Prints "Do laundry"
+/// // Prints "Buy groceries"
+/// ```
 ///
 /// Note that the `popMax()` method provided by the `PriorityHeap` is used in this
 /// example to retrieve the work items in descending order of priority.
