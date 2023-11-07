@@ -67,6 +67,30 @@ extension LimitedCapacityPriorityHeap {
     public var spareCapacity: Int {
         capacity - _storage.count
     }
+    
+    /// Creates a heap from an existing heap with the specified capacity and eviction policy.
+    /// If the initial count is greater than capacity, immediately applies the eviction policy.
+    ///
+    /// - Parameters:
+    ///   - heap: The source heap from which elements are drawn to form the new heap.
+    ///   - capacity: The maximum number of elements that the heap can hold.
+    ///   - evictionPolicy: The policy to use when the heap is at capacity and a new element is inserted.
+    ///
+    /// - Complexity: O(1)
+    @inlinable
+    public init(limiting heap: PriorityHeap<Element>, capacity: Int, evictionPolicy: EvictionPolicy) {
+        _storage = heap
+        assert(capacity > 0, "capacity must be positive")
+        self.capacity = capacity
+        self.evictionPolicy = evictionPolicy
+        
+        switch evictionPolicy {
+        case .evictMax:
+            while _storage.count > capacity { _ = _storage.removeMax() }
+        case .evictMin:
+            while _storage.count > capacity { _ = _storage.removeMin() }
+        }
+    }
 }
 
 extension LimitedCapacityPriorityHeap {
