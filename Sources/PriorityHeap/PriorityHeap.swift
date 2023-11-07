@@ -39,7 +39,7 @@ extension PriorityItem: Sendable where Referent: Sendable {}
 /// *Communications of the ACM*, vol. 29, no. 10, Oct. 1986., pp. 996-1000,
 /// doi:[10.1145/6617.6621](https://doi.org/10.1145/6617.6621)
 ///
-/// - Note: PriorityHeap is a specialized version of the Heap data structure from the swift-collections package.
+/// - Note: `PriorityHeap` is a specialized version of the `Heap` data structure from the swift-collections package.
 ///   It leverages the Prioritizable protocol to order elements based on their priority, which is a property of the elements.
 ///   This is particularly useful when the elements themselves are not directly comparable,
 ///   or when you want to order the elements based on a specific property.
