@@ -7,16 +7,14 @@ public struct DualTrackPriorityHeap<Element: Prioritizable> {
     ///
     /// This heap contains the elements that are not currently flagged. Operations on this heap
     /// affect only the unflagged elements.
-    @usableFromInline
-    internal var bare: PriorityHeap<Element> = []
+    public var bare: PriorityHeap<Element> = []
     
     /// The secondary heap that stores the flagged elements.
     ///
     /// This heap contains the elements that have been flagged. Operations on this heap
     /// affect only the flagged elements. Flagged elements can be thought of as having a special status
     /// that may require separate handling or prioritization.
-    @usableFromInline
-    internal var flagged: PriorityHeap<Element> = []
+    public var flagged: PriorityHeap<Element> = []
     
     /// Initializes a new empty `DualTrackPriorityHeap`.
     ///
