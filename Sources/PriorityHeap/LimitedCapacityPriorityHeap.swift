@@ -76,7 +76,7 @@ extension LimitedCapacityPriorityHeap {
     ///   - capacity: The maximum number of elements that the heap can hold.
     ///   - evictionPolicy: The policy to use when the heap is at capacity and a new element is inserted.
     ///
-    /// - Complexity: O(1)
+    /// - Complexity: O(capacity - heap.count)
     @inlinable
     public init(limiting heap: PriorityHeap<Element>, capacity: Int, evictionPolicy: EvictionPolicy) {
         _storage = heap
@@ -90,6 +90,19 @@ extension LimitedCapacityPriorityHeap {
         case .evictMin:
             while _storage.count > capacity { _ = _storage.removeMin() }
         }
+    }
+}
+
+extension PriorityHeap {
+    /// Creates a heap from an existing heap.
+    ///
+    /// - Parameters:
+    ///   - heap: The source heap from which elements are drawn to form the new heap.
+
+    /// - Complexity: O(1)
+    @inlinable @inline(__always)
+    init(_ heap: LimitedCapacityPriorityHeap<Element>) {
+        self = heap._storage
     }
 }
 
