@@ -75,7 +75,7 @@ To use PriorityHeap in your project, you need to add it to the dependencies in y
 Here's how to include PriorityHeap in your Swift package:
 
 ```swift
-.package(url: "https://github.com/JadenGeller/swift-priority-heap", branch: "release/0.1.0")
+.package(url: "https://github.com/JadenGeller/swift-priority-heap", branch: "release/0.2.2")
 ```
 
 Then, include it in your target dependencies:
