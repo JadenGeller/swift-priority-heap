@@ -82,3 +82,54 @@ extension PriorityHeap {
         }
     }
 }
+
+extension DualTrackPriorityHeap {
+    /// Inserts the given element into the heap.
+    ///
+    /// If the heap is at capacity, the eviction policy determines the behavior:
+    /// - If the policy is `evictMax` and the new element's priority is less than the maximum priority in the heap,
+    ///   the element with the maximum priority is removed and the new element is inserted.
+    /// - If the policy is `evictMin` and the new element's priority is greater than the minimum priority in the heap,
+    ///   the element with the minimum priority is removed and the new element is inserted.
+    /// - If the new element's priority does not meet the criteria for eviction, the new element is not inserted.
+    ///
+    /// - Parameter element: The element to insert into the heap.
+    /// - Parameter flagged: If true, element is inserted into the flagged track of the heap.
+    ///   Otherwise, element is inserted into the bare track.
+    /// - Parameter limit: The capacity and eviction policy to apply.
+    /// - Returns: The result of the insertion attempt.
+    ///
+    /// - Complexity: O(log(`count`)) element comparisons
+    @discardableResult @inlinable
+    public mutating func insert(_ element: Element, flagged: Bool, limit: CapacityLimit) -> CapacityLimit.InsertionResult<Element> {
+        if count < limit.capacity {
+            insert(element)
+            return .fit
+        }
+        switch limit.evictionPolicy {
+        case .evictMax:
+            guard element.priority < max()!.priority else { return .reject }
+            defer { insert(element, flagged: flagged) }
+            return .evict(removeMax())
+        case .evictMin:
+            guard element.priority > min()!.priority else { return .reject }
+            defer { insert(element, flagged: flagged) }
+            return .evict(removeMin())
+        }
+    }
+    
+    /// If heap count exceeds the capacity, evicts elements according to the eviction policy.
+    ///
+    /// - Parameter limit: The capacity and eviction policy to apply.
+    ///
+    /// - Complexity: O(`count`log(`count`)) element comparisons
+    @inlinable
+    public mutating func evictExcess(_ limit: CapacityLimit) {
+        switch limit.evictionPolicy {
+        case .evictMax:
+            while count > limit.capacity { _ = removeMax() }
+        case .evictMin:
+            while count > limit.capacity { _ = removeMin() }
+        }
+    }
+}
