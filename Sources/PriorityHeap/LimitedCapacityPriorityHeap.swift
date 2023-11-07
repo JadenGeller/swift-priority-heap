@@ -25,20 +25,10 @@ public struct LimitedCapacityPriorityHeap<Element: Prioritizable> {
     public let capacity: Int
 
     /// The policy to use when the heap is at capacity and a new element is inserted.
-    ///
-    /// - `evictMax`: The element with the highest priority is removed.
-    /// - `evictMin`: The element with the lowest priority is removed.
-    public enum EvictionPolicy: Sendable, Hashable {
-        /// Evicts the maximum priority element from the heap if needed to accommodate a new element with lower priority.
-        /// This ensures that the heap retains elements with lower priority values.
-        case evictMax
-        /// Evicts the minimium priority element from the heap if needed to accommodate a new element with lower priority.
-        /// This ensures that the heap retains elements with higher priority values.
-        case evictMin
-    }
+    public typealias EvictionPolicy = CapacityLimit.EvictionPolicy
     
     /// The eviction policy of the heap.
-    public let evictionPolicy: EvictionPolicy
+    public let evictionPolicy: CapacityLimit.EvictionPolicy
     
     /// Creates an empty heap with the specified capacity and eviction policy.
     ///
@@ -76,20 +66,14 @@ extension LimitedCapacityPriorityHeap {
     ///   - capacity: The maximum number of elements that the heap can hold.
     ///   - evictionPolicy: The policy to use when the heap is at capacity and a new element is inserted.
     ///
-    /// - Complexity: O(capacity - heap.count)
+    /// - Complexity: O(`count`log(`count`)) element comparisions
     @inlinable
     public init(limiting heap: PriorityHeap<Element>, capacity: Int, evictionPolicy: EvictionPolicy) {
         _storage = heap
+        _storage.evictExcess(.init(capacity: capacity, evictionPolicy: evictionPolicy))
         assert(capacity > 0, "capacity must be positive")
         self.capacity = capacity
         self.evictionPolicy = evictionPolicy
-        
-        switch evictionPolicy {
-        case .evictMax:
-            while _storage.count > capacity { _ = _storage.removeMax() }
-        case .evictMin:
-            while _storage.count > capacity { _ = _storage.removeMin() }
-        }
     }
 }
 
@@ -108,14 +92,7 @@ extension PriorityHeap {
 
 extension LimitedCapacityPriorityHeap {
     /// The result of an attempt to insert an element into the heap.
-    public enum InsertionResult {
-        /// The heap is at capacity and the element was not inserted due to the eviction policy.
-        case reject
-        /// The element was inserted successfully without evicting any existing elements.
-        case fit
-        /// The element was inserted and an existing element was evicted according to the eviction policy.
-        case evict(Element)
-    }
+    public typealias InsertionResult = CapacityLimit.InsertionResult
     
     /// Inserts the given element into the heap.
     ///
@@ -130,24 +107,11 @@ extension LimitedCapacityPriorityHeap {
     /// - Returns: The result of the insertion attempt.
     ///
     /// - Complexity: O(log(`count`)) element comparisons
-    @discardableResult @inlinable
-    public mutating func insert(_ element: Element) -> InsertionResult {
-        if _storage.count < capacity {
-            _storage.insert(element)
-            return .fit
-        }
-        switch evictionPolicy {
-        case .evictMax:
-            guard element.priority < _storage.max()!.priority else { return .reject }
-            return .evict(_storage.replaceMax(with: element))
-        case .evictMin:
-            guard element.priority > _storage.min()!.priority else { return .reject }
-            return .evict(_storage.replaceMin(with: element))
-        }
+    @discardableResult @inlinable @inline(__always)
+    public mutating func insert(_ element: Element) -> InsertionResult<Element> {
+        _storage.insert(element, limit: .init(capacity: capacity, evictionPolicy: evictionPolicy))
     }
 }
-extension LimitedCapacityPriorityHeap.InsertionResult: Equatable where Element: Equatable {}
-extension LimitedCapacityPriorityHeap.InsertionResult: Sendable where Element: Sendable {}
 
 extension LimitedCapacityPriorityHeap {
     /// A Boolean value indicating whether or not the heap is empty.
