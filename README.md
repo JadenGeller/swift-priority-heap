@@ -26,7 +26,7 @@ struct WorkItem: Prioritizable {
 
 ## PriorityHeap
 
-[PriorityHeap](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheapmodule/priorityheap) is a [Min-Max Heap](https://en.wikipedia.org/wiki/Min-max_heap) data structure, where the ordering is based on the priority of an element. It provides methods to insert elements, and to retrieve and remove the elements with the highest and lowest priority.
+[`PriorityHeap`](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheapmodule/priorityheap) is a [Min-Max Heap](https://en.wikipedia.org/wiki/Min-max_heap) data structure, where the ordering is based on the priority of an element. It provides methods to insert elements, and to retrieve and remove the elements with the highest and lowest priority.
 
 Here's an example of how to use it:
 
@@ -45,6 +45,28 @@ while let workItem = workHeap.popMax() {
 ```
 
 In this example, the `popMax()` method is used to retrieve the work items in descending order of priority.
+
+## LimitedCapacityPriorityHeap
+
+[`LimitedCapacityPriorityHeap`](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheapmodule/limitedcapacitypriorityheap) is a specialized version of `PriorityHeap` with a fixed maximum capacity. When the heap is full, it uses an eviction policy (`evictMax` or `evictMin`) to decide which element to remove upon the insertion of a new element.
+
+Consider a scenario where a server can only handle a certain number of requests at a time. When the server is at capacity, it needs to decide which request to drop based on priority:
+
+```swift
+var requestHeap = LimitedCapacityPriorityHeap<Request>(capacity: 3, evictionPolicy: .evictMin)
+requestHeap.insert(Request(id: "1", priority: 5)) // Returns .fit
+requestHeap.insert(Request(id: "2", priority: 3)) // Returns .fit
+requestHeap.insert(Request(id: "3", priority: 2)) // Returns .fit
+requestHeap.insert(Request(id: "4", priority: 4)) // Returns .evict(Request(id: "3", priority: 2))
+requestHeap.insert(Request(id: "5", priority: 1)) // Returns .reject
+
+while let request = requestHeap.popMax() {
+    print(request.id)
+}
+// Prints "1"
+// Prints "4"
+// Prints "2"
+```
 
 ## Installation
 
