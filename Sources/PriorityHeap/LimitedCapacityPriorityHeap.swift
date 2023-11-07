@@ -101,7 +101,7 @@ extension PriorityHeap {
 
     /// - Complexity: O(1)
     @inlinable @inline(__always)
-    init(_ heap: LimitedCapacityPriorityHeap<Element>) {
+    public init(_ heap: LimitedCapacityPriorityHeap<Element>) {
         self = heap._storage
     }
 }
