@@ -16,10 +16,15 @@ public struct DualTrackPriorityHeap<Element: Prioritizable> {
     /// that may require separate handling or prioritization.
     public var flagged: PriorityHeap<Element> = []
     
-    /// Initializes a new empty `DualTrackPriorityHeap`.
+    /// Initializes a new `DualTrackPriorityHeap` with the provided bare and flagged priority heaps.
     ///
-    /// Both the bare and flagged heaps are initialized as empty priority heaps.
-    public init() {}
+    /// - Parameters:
+    ///   - bare: A `PriorityHeap` containing the initial unflagged elements.
+    ///   - flagged: A `PriorityHeap` containing the initial flagged elements.
+    public init(bare: PriorityHeap<Element> = [], flagged: PriorityHeap<Element> = []) {
+        self.bare = bare
+        self.flagged = flagged
+    }
 }
 
 /// Conformance to the `Sendable` protocol for `DualTrackPriorityHeap` where `Element` is `Sendable`.
