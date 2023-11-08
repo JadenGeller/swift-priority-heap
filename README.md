@@ -2,7 +2,11 @@
 
 [`PriorityHeap`](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheapmodule/priorityheap) is a Swift data structure that extends the functionality of the [`Heap`](https://github.com/apple/swift-collections/blob/main/Documentation/Heap.md) data structure from the [swift-collections](https://github.com/apple/swift-collections) package. It utilizes the [`Prioritizable`](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheapmodule/prioritizable) protocol to allow elements to be ordered based on their inherent priority. This is particularly useful when the elements themselves are not directly comparable, or when you want to order the elements based on a specific property.
 
-## Prioritizable Protocol
+## PriorityHeapModule
+
+The [`PriorityHeapModule`](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheapmodule) provides a [`PriorityHeap`](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheapmodule/priorityheap) data structure that leverages the [`Prioritizable`](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheapmodule/prioritizable) protocol to manage elements according to their inherent priority.
+
+### `Prioritizable`
 
 The [`Prioritizable`](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheapmodule/prioritizable) protocol is defined as follows:
 
@@ -24,7 +28,7 @@ struct WorkItem: Prioritizable {
 }
 ```
 
-## PriorityHeap
+### `PriorityHeap`
 
 [`PriorityHeap`](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheapmodule/priorityheap) is a [Min-Max Heap](https://en.wikipedia.org/wiki/Min-max_heap) data structure, where the ordering is based on the priority of an element. It provides methods to insert elements, and to retrieve and remove the elements with the highest and lowest priority.
 
@@ -46,26 +50,37 @@ while let workItem = workHeap.popMax() {
 
 In this example, the `popMax()` method is used to retrieve the work items in descending order of priority.
 
-## LimitedCapacityPriorityHeap
+## PriorityHeapAlgorithms
 
-[`LimitedCapacityPriorityHeap`](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheapmodule/limitedcapacitypriorityheap) is a specialized version of `PriorityHeap` with a fixed maximum capacity. When the heap is full, it uses an eviction policy (`evictMax` or `evictMin`) to decide which element to remove upon the insertion of a new element.
+The [`PriorityHeapAlgorithms`](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheapalgorithms) module extends the capabilities of `PriorityHeap` with additional utilities that simplify common operations involving priority heaps.
 
-Consider a scenario where a server can only handle a certain number of requests at a time. When the server is at capacity, it needs to decide which request to drop based on priority:
+### Comparison
+
+The `PriorityHeapAlgorithms` module enhances the functionality of `PriorityHeap` by providing utilities to compare and manipulate multiple priority heaps. It allows you to determine which of two heaps has the element with the lesser or greater priority, and to perform operations like retrieving or removing the minimum or maximum element across heaps. This is particularly useful when you need to maintain a global ordering or priority across separate collections, such as merging tasks from different queues while preserving priority order.
+
+For example, consider two priority heaps representing tasks in different departments of a company:
 
 ```swift
-var requestHeap = LimitedCapacityPriorityHeap<Request>(capacity: 3, evictionPolicy: .evictMin)
-requestHeap.insert(Request(id: "1", priority: 5)) // Returns .fit
-requestHeap.insert(Request(id: "2", priority: 3)) // Returns .fit
-requestHeap.insert(Request(id: "3", priority: 2)) // Returns .fit
-requestHeap.insert(Request(id: "4", priority: 4)) // Returns .evict(Request(id: "3", priority: 2))
-requestHeap.insert(Request(id: "5", priority: 1)) // Returns .reject
-
-while let request = requestHeap.popMax() {
-    print(request.id)
+if let mostUrgentTask = PriorityHeap.popMax(&engineeringHeap, &marketingHeap) {
+    print("Most urgent task: \(mostUrgentTask.description)")
 }
-// Prints "1"
-// Prints "4"
-// Prints "2"
+```
+
+In this scenario, `popMax` will remove and return the task with the highest priority across both departments, ensuring that the most critical work is addressed first.
+
+### Limited Capacity
+
+In scenarios where the number of elements must be constrained due to limited resources or specific requirements, you may specify an eviction policy (evictMax or evictMin) on insertion to ensure the heap never exceeds a set capacity. This automatically manges which elements to keep based on their priority and is particularly useful for tasks like maintaining a fixed-size cache or a keeping track the most promissing paths in a graph serach algorithm.
+
+```swift
+var frontier = PriorityHeap<Path>(evictionPolicy: .evictMax, capacity: 10)
+
+for path in newPaths {
+    let result = frontier.attemptInsert(path, capacity: 10, evictionPolicy: .evictMax)
+    if case .evict(let evictedPath) = result {
+        print("Evicted less promising path: \(evictedPath.description)")
+    }
+}
 ```
 
 ## Installation
@@ -75,11 +90,11 @@ To use PriorityHeap in your project, you need to add it to the dependencies in y
 Here's how to include PriorityHeap in your Swift package:
 
 ```swift
-.package(url: "https://github.com/JadenGeller/swift-priority-heap", branch: "release/0.3.1")
+.package(url: "https://github.com/JadenGeller/swift-priority-heap", branch: "release/0.4.0")
 ```
 
 Then, include it in your target dependencies:
-
+i
 ```swift
 .target(name: "YourTarget", dependencies: ["PriorityHeap"]),
 ```
