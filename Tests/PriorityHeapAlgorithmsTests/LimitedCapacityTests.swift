@@ -91,4 +91,32 @@ final class PriorityHeapTests: XCTestCase {
         heap.evictExcess(capacity: 2, evictionPolicy: .evictMin)
         assertHeapEquals(heap, [2, 2])
     }
+    
+    // MARK: replaceMax
+    
+    func testReplaceMaxWhenConditionIsTrue() {
+        var heap: PriorityHeap = [1, 2, 3]
+        XCTAssertNotNil(heap.replaceMax(with: 0, if: { $0 > $1 }))
+        assertHeapEquals(heap, [0, 1, 2])
+    }
+    
+    func testReplaceMaxWhenConditionIsFalse() {
+        var heap: PriorityHeap = [1, 2, 3]
+        XCTAssertNil(heap.replaceMax(with: 4, if: { $0 > $1 }))
+        assertHeapEquals(heap, [1, 2, 3])
+    }
+    
+    // MARK: replaceMin
+    
+    func testReplaceMinWhenConditionIsTrue() {
+        var heap: PriorityHeap = [1, 2, 3]
+        XCTAssertNotNil(heap.replaceMin(with: 4, if: { $0 < $1 }))
+        assertHeapEquals(heap, [2, 3, 4])
+    }
+    
+    func testReplaceMinWhenConditionIsFalse() {
+        var heap: PriorityHeap = [1, 2, 3]
+        XCTAssertNil(heap.replaceMin(with: 0, if: { $0 < $1 }))
+        assertHeapEquals(heap, [1, 2, 3])
+    }
 }

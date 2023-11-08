@@ -64,11 +64,11 @@ extension PriorityHeap {
         }
         switch evictionPolicy {
         case .evictMax:
-            guard element.priority < max()!.priority else { return .reject }
-            return .evict(replaceMax(with: element))
+            guard let evicted = replaceMax(with: element, if: >) else { return .reject }
+            return .evict(evicted)
         case .evictMin:
-            guard element.priority > min()!.priority else { return .reject }
-            return .evict(replaceMin(with: element))
+            guard let evicted = replaceMin(with: element, if: <) else { return .reject }
+            return .evict(evicted)
         }
     }
     
@@ -95,5 +95,49 @@ extension PriorityHeap {
         case .evictMin:
             while count > capacity { _ = removeMin() }
         }
+    }
+}
+
+extension PriorityHeap {
+    /// Replaces the element with the maximum priority in the heap with a new element if a specified condition is met.
+    ///
+    /// This method first checks if the replacement should occur by comparing the priority of the maximum element in the heap
+    /// with the priority of the new element using the provided `shouldReplace` closure. If the condition returns `true`,
+    /// the element with the maximum priority is replaced with the new element.
+    ///
+    /// The heap must not be empty.
+    ///
+    /// - Parameters:
+    ///   - replacement: The new element that may replace the current maximum element in the heap.
+    ///   - shouldReplace: A closure that takes the existing maximum element's priority and the replacement element's priority and returns
+    ///   a Boolean value indicating whether the replacement should occur. The closure must return `true` to proceed with the replacement.
+    /// - Returns: The element that was replaced and removed from the heap, or `nil` if the replacement did not occur.
+    ///
+    /// - Complexity: O(log(`count`)) for element comparisons.
+    public mutating func replaceMax(with replacement: Element, if shouldReplace: (_ existing: Element.Priority, _ replacement: Element.Priority) -> Bool) -> Element? {
+        precondition(!isEmpty, "No element to replace")
+        guard shouldReplace(max()!.priority, replacement.priority) else { return nil }
+        return replaceMax(with: replacement)
+    }
+    
+    /// Replaces the element with the minimum priority in the heap with a new element if a specified condition is met.
+    ///
+    /// This method first checks if the replacement should occur by comparing the priority of the minimum element in the heap
+    /// with the priority of the new element using the provided `shouldReplace` closure. If the condition returns `true`,
+    /// the element with the minimum priority is replaced with the new element.
+    ///
+    /// The heap must not be empty.
+    ///
+    /// - Parameters:
+    ///   - replacement: The new element that may replace the current minimum element in the heap.
+    ///   - shouldReplace: A closure that takes the existing minimum element's priority and the replacement element's priority and returns
+    ///   a Boolean value indicating whether the replacement should occur. The closure must return `true` to proceed with the replacement.
+    /// - Returns: The element that was replaced and removed from the heap, or `nil` if the replacement did not occur.
+    ///
+    /// - Complexity: O(log(`count`)) for element comparisons.
+    public mutating func replaceMin(with replacement: Element, if shouldReplace: (_ existing: Element.Priority, _ replacement: Element.Priority) -> Bool) -> Element? {
+        precondition(!isEmpty, "No element to replace")
+        guard shouldReplace(min()!.priority, replacement.priority) else { return nil }
+        return replaceMin(with: replacement)
     }
 }
