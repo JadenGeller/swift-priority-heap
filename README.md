@@ -54,7 +54,7 @@ In this example, the `popMax()` method is used to retrieve the work items in des
 
 The [`PriorityHeapAlgorithms`](https://jadengeller.github.io/swift-priority-heap/documentation/priorityheapalgorithms) module extends the capabilities of `PriorityHeap` with additional utilities that simplify common operations involving priority heaps.
 
-### Comparison
+### Merged Operations
 
 The `PriorityHeapAlgorithms` module enhances the functionality of `PriorityHeap` by providing utilities to compare and manipulate multiple priority heaps. It allows you to determine which of two heaps has the element with the lesser or greater priority, and to perform operations like retrieving or removing the minimum or maximum element across heaps. This is particularly useful when you need to maintain a global ordering or priority across separate collections, such as merging tasks from different queues while preserving priority order.
 
@@ -90,7 +90,7 @@ To use PriorityHeap in your project, you need to add it to the dependencies in y
 Here's how to include PriorityHeap in your Swift package:
 
 ```swift
-.package(url: "https://github.com/JadenGeller/swift-priority-heap", branch: "release/0.4.0")
+.package(url: "https://github.com/JadenGeller/swift-priority-heap", branch: "release/0.4.1")
 ```
 
 Then, include it in your target dependencies:
