@@ -85,22 +85,23 @@ for path in newPaths {
 
 ## Installation
 
-To use PriorityHeap in your project, you need to add it to the dependencies in your `Package.swift` file. Please note that this package depends on a preview version of swift-collections, which is currently unstable and may change without notice. It is not recommended to use this in production code yet, but it is suitable for experimental projects.
-
 Here's how to include PriorityHeap in your Swift package:
 
 ```swift
-.package(url: "https://github.com/JadenGeller/swift-priority-heap", branch: "release/0.4.3")
+.package(url: "https://github.com/JadenGeller/swift-priority-heap", version: "0.5")
 ```
 
 Then, include it in your target dependencies:
-i
+
 ```swift
 .target(name: "YourTarget", dependencies: ["PriorityHeap"]),
 ```
 
-Remember, the swift-collections dependency is still in a preview phase on the release/1.1 branch. Its API and implementation are subject to change, so please use it with caution.
-
-## Swift Collections
+### Swift Collections
 
 PriorityHeap is backed by the Heap data structure from the [swift-collections](https://github.com/apple/swift-collections) package. Swift Collections is an open-source project from Apple introducing new data structures to Swift. For more detailed information about the performance and characteristics of the underlying Heap data structure, you can refer to the [official documentation](https://github.com/apple/swift-collections/blob/main/Documentation/Heap.md#performance).
+
+> [!WARNING]  
+> `HeapModule` is taken from an unreleased version of swift-collections, which is described as "currently unstable and may change without notice".
+
+Once released, this package should be updated to depend directly on swift-collections instead of duplicating this code.

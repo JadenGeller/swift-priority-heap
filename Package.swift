@@ -6,6 +6,10 @@ let package = Package(
     name: "swift-priority-heap",
     products: [
         .library(
+            name: "HeapModule",
+            targets: ["HeapModule"]
+        ),
+        .library(
             name: "PriorityHeapModule",
             targets: ["PriorityHeapModule"]
         ),
@@ -15,14 +19,16 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-collections", branch: "release/1.1"),
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
     ],
     targets: [
         .target(
+            name: "HeapModule"
+        ),
+        .target(
             name: "PriorityHeapModule",
             dependencies: [
-                .product(name: "HeapModule", package: "swift-collections"),
+                "HeapModule",
             ]
         ),
         .target(
