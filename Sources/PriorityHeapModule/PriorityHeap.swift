@@ -209,7 +209,7 @@ extension PriorityHeap {
     /// The heap *must not* be empty.
     ///
     /// - Complexity: O(log(`count`)) element comparisons
-    @inlinable @inline(__always)
+    @inlinable @inline(__always) @discardableResult
     public mutating func removeMin() -> Element {
         _storage.removeMin().referent
     }
@@ -219,7 +219,7 @@ extension PriorityHeap {
     /// The heap *must not* be empty.
     ///
     /// - Complexity: O(log(`count`)) element comparisons
-    @inlinable @inline(__always)
+    @inlinable @inline(__always) @discardableResult
     public mutating func removeMax() -> Element {
         _storage.removeMax().referent
     }
