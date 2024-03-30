@@ -19,16 +19,16 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: fwal/setup-swift@v1
+    - uses: actions/checkout@v4
+    - uses: fwal/setup-swift@v2
     - uses: fwcd/swift-docc-action@v1
       with:
-        target: PriorityHeapAlgorithms
+        target: PriorityHeap
         output: docs
         transform-for-static-hosting: 'true'
         disable-indexing: 'true'
         hosting-base-path: swift-priority-heap
-    - uses: actions/upload-pages-artifact@v2
+    - uses: actions/upload-pages-artifact@v3
       with:
         path: docs
-    - uses: actions/deploy-pages@v2
+    - uses: actions/deploy-pages@v4
