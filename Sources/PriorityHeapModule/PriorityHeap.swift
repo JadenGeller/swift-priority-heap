@@ -46,6 +46,12 @@ extension PriorityItem: Sendable where Referent: Sendable {}
 public struct PriorityHeap<Element: Prioritizable> {
     @usableFromInline
     internal var _storage: Heap<PriorityItem<Element>> = []
+    
+    /// Creates an empty heap.
+    @inlinable
+    public init() {
+        _storage = []
+    }
 }
 
 extension PriorityHeap: Sendable where Element: Sendable {}
@@ -118,6 +124,45 @@ extension PriorityHeap {
 }
 
 extension PriorityHeap {
+    /// Creates an empty heap with preallocated space for at least the
+    /// specified number of elements.
+    ///
+    /// Use this initializer to avoid intermediate reallocations of a heap's
+    /// storage when you know in advance how many elements you'll insert into it
+    /// after creation.
+    ///
+    /// - Parameter minimumCapacity: The minimum number of elements that the newly
+    ///   created heap should be able to store without reallocating its storage.
+    ///
+    /// - Complexity: O(1) allocations
+    @inlinable
+    public init(minimumCapacity: Int) {
+      self.init()
+      self.reserveCapacity(minimumCapacity)
+    }
+
+    /// Reserves enough space to store the specified number of elements.
+    ///
+    /// If you are adding a known number of elements to a heap, use this method
+    /// to avoid multiple reallocations. This method ensures that the heap has
+    /// unique, mutable, contiguous storage, with space allocated for at least
+    /// the requested number of elements.
+    ///
+    /// For performance reasons, the size of the newly allocated storage might be
+    /// greater than the requested capacity.
+    ///
+    /// - Parameter minimumCapacity: The minimum number of elements that the
+    ///   resulting heap should be able to store without reallocating its storage.
+    ///
+    /// - Complexity: O(`count`)
+    @inlinable
+    public mutating func reserveCapacity(_ minimumCapacity: Int) {
+      _storage.reserveCapacity(minimumCapacity)
+    }
+
+}
+
+extension PriorityHeap {
     
     /// Inserts the given element into the heap.
     ///
@@ -131,16 +176,16 @@ extension PriorityHeap {
     ///
     /// - Complexity: O(1)
     @inlinable @inline(__always)
-    public func min() -> Element? {
-        _storage.min()?.referent
+    public var min: Element? {
+        _storage.min?.referent
     }
     
     /// Returns the element with the highest priority, if available.
     ///
     /// - Complexity: O(1)
     @inlinable @inline(__always)
-    public func max() -> Element? {
-        _storage.max()?.referent
+    public var max: Element? {
+        _storage.max?.referent
     }
     
     /// Removes and returns the element with the lowest priority, if available.

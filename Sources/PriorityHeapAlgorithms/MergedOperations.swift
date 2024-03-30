@@ -19,7 +19,7 @@ extension PriorityHeap {
     /// - Complexity: O(1)
     @inlinable @inline(__always)
     public static func lesserHeap(_ first: Self, _ second: Self) -> ComparisonResult? {
-        switch (first.min(), second.min()) {
+        switch (first.min, second.min) {
         case (nil, nil): nil
         case (.some, nil): .first
         case (nil, .some): .second
@@ -44,7 +44,7 @@ extension PriorityHeap {
     /// - Complexity: O(1)
     @inlinable @inline(__always)
     public static func greaterHeap(_ first: Self, _ second: Self) -> ComparisonResult? {
-        switch (first.max(), second.max()) {
+        switch (first.max, second.max) {
         case (nil, nil): nil
         case (.some, nil): .first
         case (nil, .some): .second
@@ -146,7 +146,7 @@ extension PriorityHeap {
     /// - Note: If both heaps have minimum elements with equal priority, the minimum element from the first heap is returned.
     @inlinable @inline(__always)
     public static func min(_ first: Self, _ second: Self) -> Element? {
-        withLesserHeap(first, second, ifEqual: .first) { $0.min() }
+        withLesserHeap(first, second, ifEqual: .first) { $0.min }
     }
     
     /// Returns the maximum element from the heap with the greater maximum element priority.
@@ -159,7 +159,7 @@ extension PriorityHeap {
     /// - Note: If both heaps have maximum elements with equal priority, the maximum element from the second heap is returned.
     @inlinable @inline(__always)
     public static func max(_ first: Self, _ second: Self) -> Element? {
-        withGreaterHeap(first, second, ifEqual: .first) { $0.max() }
+        withGreaterHeap(first, second, ifEqual: .first) { $0.max }
     }
     
     /// Removes and returns the minimum element from the heap with the lesser minimum element priority.

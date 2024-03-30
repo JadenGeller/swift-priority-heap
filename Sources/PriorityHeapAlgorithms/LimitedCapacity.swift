@@ -116,7 +116,7 @@ extension PriorityHeap {
     /// - Complexity: O(log(`count`)) for element comparisons.
     public mutating func replaceMax(with replacement: Element, if shouldReplace: (_ existing: Element.Priority, _ replacement: Element.Priority) -> Bool) -> Element? {
         precondition(!isEmpty, "No element to replace")
-        guard shouldReplace(max()!.priority, replacement.priority) else { return nil }
+        guard shouldReplace(max!.priority, replacement.priority) else { return nil }
         return replaceMax(with: replacement)
     }
     
@@ -137,7 +137,7 @@ extension PriorityHeap {
     /// - Complexity: O(log(`count`)) for element comparisons.
     public mutating func replaceMin(with replacement: Element, if shouldReplace: (_ existing: Element.Priority, _ replacement: Element.Priority) -> Bool) -> Element? {
         precondition(!isEmpty, "No element to replace")
-        guard shouldReplace(min()!.priority, replacement.priority) else { return nil }
+        guard shouldReplace(min!.priority, replacement.priority) else { return nil }
         return replaceMin(with: replacement)
     }
 }

@@ -88,7 +88,7 @@ for path in newPaths {
 Here's how to include PriorityHeap in your Swift package:
 
 ```swift
-.package(url: "https://github.com/JadenGeller/swift-priority-heap", version: "0.5")
+.package(url: "https://github.com/JadenGeller/swift-priority-heap", version: "0.6")
 ```
 
 Then, include it in your target dependencies:
@@ -100,8 +100,3 @@ Then, include it in your target dependencies:
 ### Swift Collections
 
 PriorityHeap is backed by the Heap data structure from the [swift-collections](https://github.com/apple/swift-collections) package. Swift Collections is an open-source project from Apple introducing new data structures to Swift. For more detailed information about the performance and characteristics of the underlying Heap data structure, you can refer to the [official documentation](https://github.com/apple/swift-collections/blob/main/Documentation/Heap.md#performance).
-
-> [!WARNING]  
-> `HeapModule` is taken from an unreleased version of swift-collections, which is described as "currently unstable and may change without notice".
-
-Once released, this package should be updated to depend directly on swift-collections instead of duplicating this code.
